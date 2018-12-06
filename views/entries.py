@@ -8,7 +8,8 @@ def show_entries():
         #return redirect('/login')
         return redirect(url_for('login'))
         #return render_template('login.html')
-    return render_template('entries/index.html')
+    entries = Entry.query.order_by(Entry.id.desc()).all()
+    return render_template('entries/index.html', entries = entries)
 
 @app.route("/entries/new", methods=["GET"])
 def new_entry():
@@ -24,9 +25,9 @@ def add_entry():
         title = request.form['title'],
         text = request.form['text']
     )
-    print(entry)
-    #db.session.add(entry)
-    print(db.session.add(entry))
+    #print(entry)
+    db.session.add(entry)
+    #print(db.session.add(entry))
     db.session.commit()
     flash('新しい記事が投稿されました')
     return redirect(url_for('show_entries'))
