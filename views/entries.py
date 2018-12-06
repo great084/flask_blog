@@ -32,3 +32,9 @@ def add_entry():
     flash('新しい記事が投稿されました')
     return redirect(url_for('show_entries'))
 
+@app.route("/entries/<int:id>", methods={"GET"})
+def show_entry(id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    entry = Entry.query.get(id)
+    return render_template('entries/show.html', entry=entry)
